@@ -55,7 +55,7 @@ def get_wallpapers(path):
     print('{} wallpapers found. Let\'s download them all !'.format(len(wallpaper_page_urls)))
 
     bar = Bar('Downlading', max=len(wallpaper_page_urls))
-    for i, url in enumerate(wallpaper_urls_iterator):
+    for url in wallpaper_urls_iterator:
         setattr(bar, 'suffix' ,'%(index)d/%(max)d ({})'.format(url[1]))
         bar.next()
 
