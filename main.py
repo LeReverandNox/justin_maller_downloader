@@ -1,6 +1,6 @@
 #!usr/bin/env python3
 
-import os, sys, argparse
+import os, argparse
 import requests as r
 from bs4 import BeautifulSoup as bs
 from progress.bar import Bar
@@ -19,8 +19,8 @@ def make_dir(path):
         exit('[ERROR] The directory "{}" cannot be written.'.format(path))
 
 def get_wallpaper_page_urls():
-    res = r.get(JUSTIN_MALLER_URL + WALLPAPERS_QUERY)
-    soup = bs(res.content, 'html.parser')
+    content = get(JUSTIN_MALLER_URL + WALLPAPERS_QUERY)
+    soup = bs(content, 'html.parser')
     anchors = soup.find_all("a", {'class': 'image'})
     urls = [anchor.get('href') for anchor in anchors]
 
@@ -28,15 +28,15 @@ def get_wallpaper_page_urls():
 
 def get_wallpaper_urls(wallpaper_page_urls):
     for url in wallpaper_page_urls:
-        res = r.get(JUSTIN_MALLER_URL + url)
-        soup = bs(res.content, 'html.parser')
+        content = get(JUSTIN_MALLER_URL + url)
+        soup = bs(content, 'html.parser')
         images = soup.find_all('img')
         wallpaper_url = [image.get('src') for image in images if image.parent.get('id') == 'wallwindow'][0]
         filename =  wallpaper_url.rsplit('/', 1)[-1]
 
         yield (wallpaper_url, filename)
 
-def download_wallpaper(url):
+def get(url):
     res = r.get(url)
     return res.content
 
@@ -62,7 +62,7 @@ def get_wallpapers(path):
 
         file_path = '{}/{}'.format(path, url[1])
         if not is_wallpaper_existing(file_path):
-            data = download_wallpaper(url[0])
+            data = get(url[0])
             save_wallpaper(data, file_path)
 
     bar.finish()
