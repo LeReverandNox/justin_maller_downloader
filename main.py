@@ -52,9 +52,10 @@ def get_wallpapers(path):
     wallpaper_page_urls = get_wallpaper_page_urls()
     wallpaper_urls_iterator = get_wallpaper_urls(wallpaper_page_urls)
 
-    print('{} wallpapers found. Let\'s download them all !'.format(len(wallpaper_page_urls)))
+    nb_wallpapers = len(wallpaper_page_urls)
+    print('{} wallpapers found. Let\'s download them all !'.format(nb_wallpapers))
 
-    bar = Bar('Downlading', max=len(wallpaper_page_urls))
+    bar = Bar('Downlading', max=nb_wallpapers)
     for url in wallpaper_urls_iterator:
         setattr(bar, 'suffix' ,'%(index)d/%(max)d ({})'.format(url[1]))
         bar.next()
