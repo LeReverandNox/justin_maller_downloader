@@ -25,6 +25,7 @@ def get_wallpaper_page_urls():
     urls = [anchor.get('href') for anchor in anchors]
 
     return urls
+
 def get_wallpaper_urls(wallpaper_page_urls):
     for url in wallpaper_page_urls:
         res = r.get(JUSTIN_MALLER_URL + url)
@@ -40,7 +41,9 @@ def download_wallpaper(url):
     return res.content
 
 def save_wallpaper(data, file_path):
-    open(file_path, 'wb').write(data)
+    f = open(file_path, 'wb')
+    f.write(data)
+    f.close()
 
 def is_wallpaper_existing(file_path):
     return os.path.isfile(file_path)
